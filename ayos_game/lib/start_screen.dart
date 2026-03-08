@@ -7,8 +7,26 @@ class StartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Start Screen"),
+        title: const Text("Start Screen"),
       ),
+      body: StartGame(),
+    );
+  }
+}
+
+class StartGame extends StatelessWidget {
+  const StartGame ({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          TextButton.icon(
+            onPressed: () => Navigator.pushNamed(context, '/levelScreen'), 
+            label: Text("Play Game"))
+        ]
+      )
     );
   }
 }

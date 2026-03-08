@@ -17,7 +17,8 @@ class Home extends StatelessWidget {
         "/startScreen": (context) => const StartScreen(),
         "/levelScreen": (context) => const LevelScreen(),
         "/gameScreen": (context) => const GameScreen(),
-      }
+      },
+      home: const StartScreen()
     );
   }
 }
