@@ -3,7 +3,7 @@ import "start_screen.dart";
 import "level_screen.dart";
 import "game_screen.dart";
 
-void main() => runApp(const Home())
+void main() => runApp(const Home());
 
 class Home extends StatelessWidget {
   const Home({super.key});
