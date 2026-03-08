@@ -7,7 +7,8 @@ class StartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Start Screen"),
+        title: const Text("Ayos"),
+        centerTitle: true,
       ),
       body: StartGame(),
     );
