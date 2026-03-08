@@ -7,8 +7,8 @@ class LevelScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Select a Level"),
-        centerTitle: true,
+        // title: Text("Select a Level"),
+        // centerTitle: true,
       ),
       body: SelectLevel(),
     );
@@ -23,6 +23,9 @@ class SelectLevel extends StatelessWidget {
     return Center(
       child: Column(
         children: [
+
+          Text("Select a Level"),
+          
           TextButton.icon(
             onPressed: () => Navigator.pushNamed(context, '/gameScreen'), 
             label: Text("Easy")),
