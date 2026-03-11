@@ -8,7 +8,7 @@ void main() => runApp(const Home());
 class Home extends StatelessWidget {
   const Home({super.key});
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -18,7 +18,19 @@ class Home extends StatelessWidget {
         "/levelScreen": (context) => const LevelScreen(),
         "/gameScreen": (context) => const GameScreen(),
       },
-      home: const StartScreen()
+      home: const StartScreen(),
+      builder: (context, child) {
+        return Center(
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: SizedBox(
+              width: 450, 
+              height: 800,  
+              child: child!,
+            ),
+          ),
+        );
+      },
     );
   }
 }
