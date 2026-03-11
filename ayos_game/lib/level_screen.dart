@@ -54,14 +54,12 @@ class SelectLevel extends StatelessWidget {
 
         // Select a Level image
         Transform.translate(
-          offset: const Offset(0, -10), // negative = up, positive = down
+          offset: const Offset(0, -50), // negative = up, positive = down
           child: SizedBox(
             width: 600,
             child: Image.asset("assets/images/selectLevel.png"),
           ),
         ),
-
-        const SizedBox(height: 24),
 
         // Easy button
         InkWell(
