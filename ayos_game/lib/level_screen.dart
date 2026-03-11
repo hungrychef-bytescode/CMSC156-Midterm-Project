@@ -27,15 +27,15 @@ class SelectLevel extends StatelessWidget {
           Text("Select a Level"),
           
           TextButton.icon(
-            onPressed: () => Navigator.pushNamed(context, '/gameScreen'), 
+            onPressed: () => Navigator.pushNamed(context, '/gameScreen', arguments: "easy"), 
             label: Text("Easy")),
 
           TextButton.icon(
-            onPressed: () => Navigator.pushNamed(context, '/gameScreen'), 
+            onPressed: () => Navigator.pushNamed(context, '/gameScreen', arguments: "average"), 
             label: Text("Average")),
 
           TextButton.icon(
-            onPressed: () => Navigator.pushNamed(context, '/gameScreen'), 
+            onPressed: () => Navigator.pushNamed(context, '/gameScreen', arguments: "difficult"), 
             label: Text("Difficult"))
         ]
       )
