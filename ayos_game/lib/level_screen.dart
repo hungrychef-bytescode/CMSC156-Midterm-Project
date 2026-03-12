@@ -63,7 +63,7 @@ class SelectLevel extends StatelessWidget {
 
         // Easy button
         InkWell(
-          onTap: () => Navigator.pushNamed(context, '/gameScreen', arguments: "easy"),
+          onTap: () => Navigator.pushNamed(context, '/gameScreen', arguments: "Easy"),
           child: SizedBox(
             width: 280,
             child: Image.asset("assets/images/easy.png"),
@@ -74,7 +74,7 @@ class SelectLevel extends StatelessWidget {
 
         // Average button
         InkWell(
-          onTap: () => Navigator.pushNamed(context, '/gameScreen', arguments: "average"),
+          onTap: () => Navigator.pushNamed(context, '/gameScreen', arguments: "Average"),
           child: SizedBox(
             width: 280,
             child: Image.asset("assets/images/average.png"),
@@ -85,7 +85,7 @@ class SelectLevel extends StatelessWidget {
 
         // Difficult button
         InkWell(
-          onTap: () => Navigator.pushNamed(context, '/gameScreen', arguments: "difficult"),
+          onTap: () => Navigator.pushNamed(context, '/gameScreen', arguments: "Difficult"),
           child: SizedBox(
             width: 280,
             child: Image.asset("assets/images/difficult.png"),
