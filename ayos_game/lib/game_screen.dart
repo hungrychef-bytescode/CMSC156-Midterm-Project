@@ -40,53 +40,6 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     final level = ModalRoute.of(context)!.settings.arguments as String;
-
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 60,
-        title: Text(
-          "Level: $level",
-          style: GoogleFonts.boogaloo(
-            color: const Color.fromARGB(255, 249, 199, 90),
-            fontSize: 30,
-            letterSpacing: 3,
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 90, 59, 12),
-        iconTheme: const IconThemeData(color: Color.fromARGB(255, 249, 199, 90)),
-        shape: Border(
-          bottom: BorderSide(
-            color: const Color.fromARGB(255, 255, 221, 0),
-            width: 2.5,
-          ),
-
-        ),
-      ),
-      body: SizedBox.expand(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            // Background image
-            Image.asset(
-              "assets/images/maingame156.jpg",
-              fit: BoxFit.cover,
-              alignment: const Alignment(0, 2),
-            ),
-            // Blur layer
-            BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 2),
-              child: Container(
-                color: Colors.black.withOpacity(0.1),
-              ),
-            ),
-            Center(
-              child: Column(
-                children: [Text("")],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return Container();
   }
 }

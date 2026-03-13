@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import "start_screen.dart";
 import "level_screen.dart";
 import "game_screen.dart";
+import "easy_screen.dart";
+import "average_screen.dart";
+import "difficult_screen.dart";
 
 void main() => runApp(const Home());
 
@@ -16,7 +19,9 @@ class Home extends StatelessWidget {
       routes: {
         "/startScreen": (context) => const StartScreen(),
         "/levelScreen": (context) => const LevelScreen(),
-        "/gameScreen": (context) => const GameScreen(),
+        "/easyScreen": (context) => const EasyScreen(),
+        "/averageScreen": (context) => const AverageScreen(),
+        "/difficultScreen": (context) => const DifficultScreen(),
       },
       home: const StartScreen(),
       builder: (context, child) {
