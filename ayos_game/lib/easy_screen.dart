@@ -13,18 +13,28 @@ class EasyScreen extends StatefulWidget {
 class _EasyScreenState extends State<EasyScreen> {
   int gameTime = 0;
   int items = 0;
-
   int countdown = 5;
   bool gameStarted = false;
-
   Timer? timer;
+
+  // Bottom row - fixed reference
+  final List<String> targetBottles = [
+    "assets/images/bottle_myst.png",
+    "assets/images/bottle_myst.png",
+    "assets/images/bottle_myst.png",
+  ];
+
+  // Top row - player arranges these
+  List<String> playerBottles = [
+    "assets/images/c2green.webp",
+    "assets/images/c2yellow.webp",
+    "assets/images/c2red.webp",
+  ];
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     final level = ModalRoute.of(context)!.settings.arguments as String;
-
     if (level == "Easy") {
       gameTime = 60;
       items = 3;
@@ -35,6 +45,14 @@ class _EasyScreenState extends State<EasyScreen> {
       gameTime = 30;
       items = 5;
     }
+  }
+
+  void swapBottles(int fromIndex, int toIndex) {
+    setState(() {
+      final temp = playerBottles[fromIndex];
+      playerBottles[fromIndex] = playerBottles[toIndex];
+      playerBottles[toIndex] = temp;
+    });
   }
 
   @override
@@ -85,10 +103,10 @@ class _EasyScreenState extends State<EasyScreen> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Transform.translate(
-                offset: const Offset(0, 110),
+                offset: const Offset(0, 150),
                 child: Image.asset(
                   "assets/images/box.png",
-                  width: 430,
+                  width: 450,
                 ),
               ),
             ),
@@ -133,18 +151,67 @@ class _EasyScreenState extends State<EasyScreen> {
               ),
             ),
 
-            // Silhouette Bottles
+            // Target bottles (bottom row - fixed reference)
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 67),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset("assets/images/bottle_myst.png", width: 150),
-                    Image.asset("assets/images/bottle_myst.png", width: 150),
-                    Image.asset("assets/images/bottle_myst.png", width: 150),
-                  ],
+                  children: List.generate(targetBottles.length, (index) {
+                    return Image.asset(
+                      targetBottles[index],
+                      width: 130,
+                    );
+                  }),
+                ),
+              ),
+            ),
+
+            // Player bottles (top row - draggable)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 265),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(playerBottles.length, (index) {
+                    return DragTarget<int>(
+                      onAcceptWithDetails: (details) {
+                        swapBottles(details.data, index);
+                      },
+                      builder: (context, candidateData, rejectedData) {
+                        return Draggable<int>(
+                          data: index,
+                          feedback: Image.asset(
+                            playerBottles[index],
+                            width: 130,
+                          ),
+                          childWhenDragging: Opacity(
+                            opacity: 0.3,
+                            child: Image.asset(
+                              playerBottles[index],
+                              width: 130,
+                            ),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: candidateData.isNotEmpty
+                                    ? Colors.yellow
+                                    : Colors.transparent,
+                                width: 2,
+                              ),
+                            ),
+                            child: Image.asset(
+                              playerBottles[index],
+                              width: 140,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
                 ),
               ),
             ),
