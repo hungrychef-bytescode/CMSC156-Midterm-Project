@@ -220,7 +220,7 @@ class _EasyScreenState extends State<EasyScreen>
       barrierDismissible: false,
       builder: (_) => _GameDialog(
         title: "You guessed all items correctly!",
-        showClose: true,
+        showClose: false,
         onClose: _goHome,
         actions: [
           _PillBtn(label: "Back to Menu", onTap: _goHome),
@@ -236,7 +236,7 @@ class _EasyScreenState extends State<EasyScreen>
       builder: (_) => _GameDialog(
         title: "Time's Up!",
         subtitle: "Better luck next time.",
-        showClose: true,
+        showClose: false,
         onClose: _goHome,
         actions: [
           _PillBtn(label: "Back to Menu", onTap: _goHome),
@@ -253,7 +253,7 @@ class _EasyScreenState extends State<EasyScreen>
       builder: (ctx) => _GameDialog(
         title: "Are you sure you want to exit the game?",
         subtitle: "Current progress will not be saved",
-        showClose: true,
+        showClose: false,
         onClose: () => Navigator.of(ctx).pop(),
         actions: [
           _PillBtn(label: "Continue Playing", onTap: () => Navigator.of(ctx).pop()),
