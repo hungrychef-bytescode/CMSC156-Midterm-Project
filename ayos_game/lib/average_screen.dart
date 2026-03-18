@@ -450,7 +450,7 @@ class _AverageScreenState extends State<AverageScreen>
                   children: List.generate(
                     correctOrder.length,
                     (_) => Image.asset(
-                      "assets/images/snack_myst.png",
+                      "assets/images/cheesering.png",
                       width: 100,
                     ),
                   ),

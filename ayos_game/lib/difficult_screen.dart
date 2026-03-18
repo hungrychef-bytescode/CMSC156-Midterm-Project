@@ -32,11 +32,11 @@ class _DifficultScreenState extends State<DifficultScreen>
 
   // ── Bottle data ───────────────────────────────────────────────────
   final List<Map<String, String>> allBottles = [
-    {"id": "green",  "asset": "assets/images/cheesering.png"},
-    {"id": "yellow", "asset": "assets/images/cheezit.png"},
-    {"id": "red",    "asset": "assets/images/chizcurls.png"},
-    {"id": "red",    "asset": "assets/images/dingdong.png"},
-    {"id": "red",    "asset": "assets/images/dingdong.png"},
+    {"id": "green",  "asset": "assets/images/skimmers.png"},
+    {"id": "yellow", "asset": "assets/images/elektrons.png"},
+    {"id": "red",    "asset": "assets/images/clovers.png"},
+    {"id": "red",    "asset": "assets/images/ugyon.png"},
+    {"id": "red",    "asset": "assets/images/redbolts.png"},
   ];
 
   late List<Map<String, String>> correctOrder;
@@ -451,7 +451,7 @@ class _DifficultScreenState extends State<DifficultScreen>
                   children: List.generate(
                     correctOrder.length,
                     (_) => Image.asset(
-                      "assets/images/snack_myst.png",
+                      "assets/images/elektrons.png",
                       width: 80,
                     ),
                   ),
