@@ -219,12 +219,11 @@ class _EasyScreenState extends State<EasyScreen>
       context: context,
       barrierDismissible: false,
       builder: (_) => _GameDialog(
-        title: "🎉 You guessed all items correctly!",
-        subtitle: "Earned reward: $reward pesos",
-        subtitleColor: const Color(0xFFC8860A),
+        title: "You guessed all items correctly!",
+        showClose: true,
+        onClose: _goHome,
         actions: [
-          _DialogBtn(label: "Back to Menu", onTap: _goHome, outlined: true),
-          _DialogBtn(label: "Next Level",   onTap: _nextLevel),
+          _PillBtn(label: "Back to Menu", onTap: _goHome),
         ],
       ),
     );
@@ -235,11 +234,13 @@ class _EasyScreenState extends State<EasyScreen>
       context: context,
       barrierDismissible: false,
       builder: (_) => _GameDialog(
-        title: "⏰ Time's Up!",
+        title: "Time's Up!",
         subtitle: "Better luck next time.",
+        showClose: true,
+        onClose: _goHome,
         actions: [
-          _DialogBtn(label: "Back to Menu", onTap: _goHome, outlined: true),
-          _DialogBtn(label: "Try Again",    onTap: _restart),
+          _PillBtn(label: "Back to Menu", onTap: _goHome),
+          _PillBtn(label: "Try Again",    onTap: _restart),
         ],
       ),
     );
@@ -249,13 +250,14 @@ class _EasyScreenState extends State<EasyScreen>
     if (gameOver) { _goHome(); return; }
     showDialog(
       context: context,
-      builder: (_) => _GameDialog(
-        title: "Exit Game?",
-        subtitle: "Are you sure you want to exit?\nCurrent progress will not be saved.",
+      builder: (ctx) => _GameDialog(
+        title: "Are you sure you want to exit the game?",
+        subtitle: "Current progress will not be saved",
         showClose: true,
+        onClose: () => Navigator.of(ctx).pop(),
         actions: [
-          _DialogBtn(label: "Continue Playing", onTap: () => Navigator.pop(context)),
-          _DialogBtn(label: "Exit Game",         onTap: _goHome, danger: true),
+          _PillBtn(label: "Continue Playing", onTap: () => Navigator.of(ctx).pop()),
+          _PillBtn(label: "Exit Game",         onTap: _goHome),
         ],
       ),
     );
@@ -264,28 +266,34 @@ class _EasyScreenState extends State<EasyScreen>
   void _showSettingsDialog() {
     bool bgMusic = true;
     bool sfx     = true;
+    // Show as a positioned popup anchored to top-right (near the ⋮ button)
     showDialog(
       context: context,
+      barrierColor: Colors.transparent,
       builder: (_) => StatefulBuilder(
-        builder: (ctx, setS) => _GameDialog(
-          title: "Settings",
-          showClose: true,
-          customContent: Column(
-            children: [
-              _SettingsRow(
-                label: "Background Music",
-                value: bgMusic,
-                onChanged: (v) => setS(() => bgMusic = v),
+        builder: (ctx, setS) => Stack(
+          children: [
+            // Dismiss on tap outside
+            GestureDetector(
+              onTap: () => Navigator.of(ctx).pop(),
+              behavior: HitTestBehavior.opaque,
+              child: const SizedBox.expand(),
+            ),
+            Positioned(
+              top: 64,   // just below the AppBar
+              right: 8,
+              child: Material(
+                color: Colors.transparent,
+                child: _SettingsPopup(
+                  bgMusic: bgMusic,
+                  sfx: sfx,
+                  onBgMusicChanged: (v) => setS(() => bgMusic = v),
+                  onSfxChanged:     (v) => setS(() => sfx = v),
+                  onClose: () => Navigator.of(ctx).pop(),
+                ),
               ),
-              _SettingsRow(
-                label: "Sound Effects",
-                value: sfx,
-                onChanged: (v) => setS(() => sfx = v),
-              ),
-              const SizedBox(height: 14),
-              _DialogBtn(label: "OK", onTap: () => Navigator.pop(ctx)),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -633,6 +641,16 @@ class _EasyScreenState extends State<EasyScreen>
   }
 }
 
+// ── Color Palette (from mockup) ───────────────────────────────────────
+// Modal bg:      #C8C6E8  (lavender/periwinkle)
+// Modal border:  #9B97D4
+// Title text:    #2E2B5F  (deep indigo)
+// Subtitle text: #555370
+// Pill btn bg:   #F5C842  (gold yellow)
+// Pill btn border: #C89A10
+// Pill btn text: #4A3000
+// AppBar/footer: #382507
+
 // ── Hint Bubble ───────────────────────────────────────────────────────
 class _HintBubble extends StatelessWidget {
   final String message;
@@ -641,19 +659,23 @@ class _HintBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 9),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(240, 230, 240, 255),
-        border: Border.all(color: const Color(0xFFAAC4FF), width: 2),
-        borderRadius: BorderRadius.circular(14),
+        color: const Color(0xFFEDEBFF),
+        border: Border.all(color: const Color(0xFF9B97D4), width: 2),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 8)
+          BoxShadow(
+            color: Colors.black.withOpacity(0.18),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          )
         ],
       ),
       child: Text(
         message,
         style: GoogleFonts.boogaloo(
-          color: const Color(0xFF3A3A5C),
+          color: const Color(0xFF2E2B5F),
           fontSize: 17,
           letterSpacing: 1,
         ),
@@ -667,7 +689,11 @@ class _ActionButton extends StatelessWidget {
   final String label;
   final bool enabled;
   final VoidCallback onTap;
-  const _ActionButton({required this.label, required this.enabled, required this.onTap});
+  const _ActionButton({
+    required this.label,
+    required this.enabled,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -684,7 +710,7 @@ class _ActionButton extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
-            border: Border.all(color: const Color(0xFFB08010), width: 3),
+            border: Border.all(color: const Color(0xFFC89A10), width: 2.5),
             borderRadius: BorderRadius.circular(30),
             boxShadow: const [
               BoxShadow(
@@ -713,75 +739,88 @@ class _ActionButton extends StatelessWidget {
   }
 }
 
-// ── Reusable Game Dialog ──────────────────────────────────────────────
+// ── Game Dialog (lavender card) ───────────────────────────────────────
 class _GameDialog extends StatelessWidget {
   final String title;
   final String? subtitle;
-  final Color? subtitleColor;
   final List<Widget>? actions;
   final bool showClose;
-  final Widget? customContent;
+  final VoidCallback? onClose;
 
   const _GameDialog({
     required this.title,
     this.subtitle,
-    this.subtitleColor,
     this.actions,
     this.showClose = false,
-    this.customContent,
+    this.onClose,
   });
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: const BorderSide(color: Color(0xFF9B97D4), width: 2),
+      ),
+      backgroundColor: const Color(0xFFC8C6E8),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
+        padding: const EdgeInsets.fromLTRB(24, 16, 24, 22),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Close button row
             if (showClose)
               Align(
                 alignment: Alignment.topRight,
                 child: GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: const Icon(Icons.close, size: 20, color: Colors.grey),
+                  onTap: onClose ?? () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: 22, height: 22,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF9B97D4),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.close, size: 14, color: Colors.white),
+                  ),
                 ),
-              ),
+              )
+            else
+              const SizedBox(height: 4),
+
+            const SizedBox(height: 6),
+
             Text(
               title,
               textAlign: TextAlign.center,
-              style: GoogleFonts.boogaloo(
-                fontSize: 20,
-                color: const Color(0xFF3A3A5C),
+              style: GoogleFonts.nunito(
+                fontSize: 17,
+                fontWeight: FontWeight.w800,
+                color: const Color(0xFF2E2B5F),
+                height: 1.3,
               ),
             ),
+
             if (subtitle != null) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
                 subtitle!,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunito(
-                  fontSize: 14,
-                  color: subtitleColor ?? const Color(0xFF666666),
+                  fontSize: 13,
                   fontWeight: FontWeight.w600,
+                  color: const Color(0xFF555370),
                 ),
               ),
             ],
-            if (customContent != null) ...[
-              const SizedBox(height: 12),
-              customContent!,
-            ],
+
             if (actions != null && actions!.isNotEmpty) ...[
               const SizedBox(height: 18),
-              Row(
-                children: actions!
-                    .map((a) => Expanded(child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: a,
-                        )))
-                    .toList(),
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                alignment: WrapAlignment.center,
+                children: actions!,
               ),
             ],
           ],
@@ -791,69 +830,41 @@ class _GameDialog extends StatelessWidget {
   }
 }
 
-// ── Dialog Button ─────────────────────────────────────────────────────
-class _DialogBtn extends StatelessWidget {
+// ── Pill Button (gold, used inside dialogs) ───────────────────────────
+class _PillBtn extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
-  final bool outlined;
-  final bool danger;
 
-  const _DialogBtn({
-    required this.label,
-    required this.onTap,
-    this.outlined = false,
-    this.danger = false,
-  });
+  const _PillBtn({required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 9),
         decoration: BoxDecoration(
-          gradient: outlined || danger
-              ? null
-              : const LinearGradient(
-                  colors: [Color(0xFFF5D060), Color(0xFFD4A020)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-          color: danger
-              ? const Color(0xFFFF6B6B)
-              : outlined
-                  ? Colors.white
-                  : null,
-          border: Border.all(
-            color: danger
-                ? const Color(0xFFE05050)
-                : outlined
-                    ? const Color(0xFFDDDDDD)
-                    : const Color(0xFFB08010),
-            width: 2,
+          gradient: const LinearGradient(
+            colors: [Color(0xFFF7D45A), Color(0xFFD4A020)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-          borderRadius: BorderRadius.circular(22),
-          boxShadow: [
-            if (!outlined)
-              BoxShadow(
-                color: danger
-                    ? const Color(0xFFC04040)
-                    : const Color(0xFF7A5C08),
-                offset: const Offset(0, 3),
-                blurRadius: 0,
-              ),
+          border: Border.all(color: const Color(0xFFC89A10), width: 1.8),
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0xFF7A5C08),
+              offset: Offset(0, 3),
+              blurRadius: 0,
+            ),
           ],
         ),
         child: Text(
           label,
-          textAlign: TextAlign.center,
-          style: GoogleFonts.boogaloo(
-            fontSize: 15,
-            color: danger
-                ? Colors.white
-                : outlined
-                    ? const Color(0xFF555555)
-                    : const Color(0xFF4A3000),
+          style: GoogleFonts.nunito(
+            fontSize: 14,
+            fontWeight: FontWeight.w800,
+            color: const Color(0xFF4A3000),
           ),
         ),
       ),
@@ -861,13 +872,125 @@ class _DialogBtn extends StatelessWidget {
   }
 }
 
-// ── Settings Row ──────────────────────────────────────────────────────
-class _SettingsRow extends StatelessWidget {
+// ── Settings Popup (top-right anchored card) ──────────────────────────
+class _SettingsPopup extends StatelessWidget {
+  final bool bgMusic;
+  final bool sfx;
+  final ValueChanged<bool> onBgMusicChanged;
+  final ValueChanged<bool> onSfxChanged;
+  final VoidCallback onClose;
+
+  const _SettingsPopup({
+    required this.bgMusic,
+    required this.sfx,
+    required this.onBgMusicChanged,
+    required this.onSfxChanged,
+    required this.onClose,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200,
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: const Color(0xFF9B97D4), width: 1.5),
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Settings",
+                style: GoogleFonts.nunito(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF2E2B5F),
+                ),
+              ),
+              GestureDetector(
+                onTap: onClose,
+                child: const Icon(Icons.close, size: 18, color: Color(0xFF888888)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+
+          // Background Music
+          _SettingsCheckRow(
+            label: "Background Music",
+            value: bgMusic,
+            onChanged: onBgMusicChanged,
+          ),
+          const SizedBox(height: 4),
+
+          // Sound Effects
+          _SettingsCheckRow(
+            label: "Sound Effects",
+            value: sfx,
+            onChanged: onSfxChanged,
+          ),
+          const SizedBox(height: 14),
+
+          // OK button centered
+          Center(
+            child: GestureDetector(
+              onTap: onClose,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 7),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFF7D45A), Color(0xFFD4A020)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                  border: Border.all(color: const Color(0xFFC89A10), width: 1.5),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0xFF7A5C08),
+                      offset: Offset(0, 2),
+                      blurRadius: 0,
+                    ),
+                  ],
+                ),
+                child: Text(
+                  "OK",
+                  style: GoogleFonts.nunito(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF4A3000),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Settings Checkbox Row ─────────────────────────────────────────────
+class _SettingsCheckRow extends StatelessWidget {
   final String label;
   final bool value;
   final ValueChanged<bool> onChanged;
 
-  const _SettingsRow({
+  const _SettingsCheckRow({
     required this.label,
     required this.value,
     required this.onChanged,
@@ -875,25 +998,30 @@ class _SettingsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Row(
-        children: [
-          Checkbox(
+    return Row(
+      children: [
+        SizedBox(
+          width: 24, height: 24,
+          child: Checkbox(
             value: value,
             onChanged: (v) => onChanged(v ?? false),
-            activeColor: const Color(0xFFC8860A),
+            activeColor: const Color(0xFF6C63C4),
+            side: const BorderSide(color: Color(0xFF9B97D4), width: 1.5),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            visualDensity: VisualDensity.compact,
           ),
-          Text(
-            label,
-            style: GoogleFonts.nunito(
-              fontSize: 14,
-              color: const Color(0xFF444444),
-              fontWeight: FontWeight.w600,
-            ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          label,
+          style: GoogleFonts.nunito(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: const Color(0xFF444444),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
