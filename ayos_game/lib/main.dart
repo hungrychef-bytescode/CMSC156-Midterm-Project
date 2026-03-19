@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import "start_screen.dart";
 import "level_screen.dart";
 import "game_screen.dart";
-import "easy_screen.dart";
-import "average_screen.dart";
-import "difficult_screen.dart";
+import "game_config.dart";
 
 void main() => runApp(const Home());
 
@@ -19,9 +17,11 @@ class Home extends StatelessWidget {
       routes: {
         "/startScreen": (context) => const StartScreen(),
         "/levelScreen": (context) => const LevelScreen(),
-        "/easyScreen": (context) => const EasyScreen(),
-        "/averageScreen": (context) => const AverageScreen(),
-        "/difficultScreen": (context) => const DifficultScreen(),
+        "/game": (context) => GameScreen(
+          config: configForLevel(
+            ModalRoute.of(context)!.settings.arguments as String? ?? "Easy",
+          ),
+        ),
       },
       home: const StartScreen(),
       builder: (context, child) {
@@ -29,8 +29,8 @@ class Home extends StatelessWidget {
           child: FittedBox(
             fit: BoxFit.contain,
             child: SizedBox(
-              width: 450, 
-              height: 800,  
+              width: 450,
+              height: 800,
               child: child!,
             ),
           ),

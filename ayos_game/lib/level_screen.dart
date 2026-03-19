@@ -54,7 +54,7 @@ class SelectLevel extends StatelessWidget {
 
         // Select a Level image
         Transform.translate(
-          offset: const Offset(0, -50), // negative = up, positive = down
+          offset: const Offset(0, -50),
           child: SizedBox(
             width: 600,
             child: Image.asset("assets/images/selectLevel.png"),
@@ -63,7 +63,7 @@ class SelectLevel extends StatelessWidget {
 
         // Easy button
         InkWell(
-          onTap: () => Navigator.pushNamed(context, '/easyScreen', arguments: "Easy"),
+          onTap: () => Navigator.pushNamed(context, '/game', arguments: "Easy"),
           child: SizedBox(
             width: 280,
             child: Image.asset("assets/images/easy.png"),
@@ -74,7 +74,7 @@ class SelectLevel extends StatelessWidget {
 
         // Average button
         InkWell(
-          onTap: () => Navigator.pushNamed(context, '/averageScreen', arguments: "Average"),
+          onTap: () => Navigator.pushNamed(context, '/game', arguments: "Average"),
           child: SizedBox(
             width: 280,
             child: Image.asset("assets/images/average.png"),
@@ -85,7 +85,7 @@ class SelectLevel extends StatelessWidget {
 
         // Difficult button
         InkWell(
-          onTap: () => Navigator.pushNamed(context, '/difficultScreen', arguments: "Difficult"),
+          onTap: () => Navigator.pushNamed(context, '/game', arguments: "Difficult"),
           child: SizedBox(
             width: 280,
             child: Image.asset("assets/images/difficult.png"),
