@@ -1,4 +1,4 @@
-class LevelConfig {
+class LevelConfig { //level data
   final String level;
   final int totalTime;
   final int itemCount;

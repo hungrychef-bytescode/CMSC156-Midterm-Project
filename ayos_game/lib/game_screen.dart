@@ -4,8 +4,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'game_config.dart';
-import 'game_widgets.dart';
-import 'game_dialogs.dart';
+import 'game_components.dart';
 
 class GameScreen extends StatefulWidget {
   final LevelConfig config;
@@ -203,6 +202,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
       builder: (_) => GameDialog(
         title: "Time's Up!",
         subtitle: "Better luck next time.",
+        correctOrder: correctOrder,
         actions: [
           PillBtn(label: "Back to Menu", onTap: _goHome),
           PillBtn(label: "Try Again",    onTap: _restart),
@@ -347,22 +347,22 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             ),
 
             // Mystery items (bottom row — hidden)
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 67),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: List.generate(
-                    correctOrder.length,
-                    (_) => Image.asset(
-                      widget.config.mysteryAsset,
-                      width: widget.config.itemWidth,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // Align(
+            //   alignment: Alignment.bottomCenter,
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(bottom: 67),
+            //     child: Row(
+            //       mainAxisSize: MainAxisSize.min,
+            //       children: List.generate(
+            //         correctOrder.length,
+            //         (_) => Image.asset(
+            //           widget.config.mysteryAsset,
+            //           width: widget.config.itemWidth,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
             // Player items (top row — draggable)
             Align(
