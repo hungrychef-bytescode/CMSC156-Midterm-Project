@@ -25,6 +25,8 @@ class Home extends StatelessWidget {
       initialRoute: Routes.start,
       
       routes: {
+        Routes.start: (context) => const StartScreen(), //calls start screen
+        Routes.level: (context) => const LevelScreen(), //calls level screen
       },
 
       onGenerateRoute: (settings) {
