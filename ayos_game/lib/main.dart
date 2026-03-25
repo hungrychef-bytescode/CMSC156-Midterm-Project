@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:ayos_game/screens/screens.dart';
-
 import "package:ayos_game/utils/helper.dart";
 import "package:ayos_game/routes.dart";
 import "package:ayos_game/models/level.dart";
@@ -27,8 +25,6 @@ class Home extends StatelessWidget {
       initialRoute: Routes.start,
       
       routes: {
-        Routes.start: (context) => const StartScreen(),
-        Routes.level: (context) => const LevelScreen(),
       },
 
       onGenerateRoute: (settings) {
