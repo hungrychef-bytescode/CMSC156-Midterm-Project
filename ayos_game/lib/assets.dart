@@ -12,6 +12,7 @@ class Assets {
   
   //game screen
   static const gameBG = "assets/images/maingame156.jpg";
+  static const box = "assets/images/box.png";
   
   //level 1 (easy) game items
   static const c2Green = "assets/images/c2green.webp";

@@ -89,6 +89,8 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               gameController.countCorrectPositions(),
               );
             }
+
+            animations.hintSlide.forward(from: 0);
           },
         );
       },
