@@ -1,29 +1,48 @@
 import 'package:flutter/material.dart';
-import "start_screen.dart";
-import "level_screen.dart";
-import "game_screen.dart";
-import "game_config.dart";
 
+import 'package:ayos_game/screens/screens.dart';
+
+import "package:ayos_game/utils/helper.dart";
+import "package:ayos_game/routes.dart";
+import "package:ayos_game/models/level.dart";
+
+//start app and run home widget
 void main() => runApp(const Home());
 
+
+/*
+  class Home: root widget of the game
+  - contains the App Configuration (materialapp)
+  - initial route, static and dynamic routes.
+  - builder for scaling screen
+*/
 class Home extends StatelessWidget {
   const Home({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/",
+
+      initialRoute: Routes.start,
+      
       routes: {
-        "/startScreen": (context) => const StartScreen(),
-        "/levelScreen": (context) => const LevelScreen(),
-        "/game": (context) => GameScreen(
-          config: configForLevel(
-            ModalRoute.of(context)!.settings.arguments as String? ?? "Easy",
-          ),
-        ),
+        Routes.start: (context) => const StartScreen(),
+        Routes.level: (context) => const LevelScreen(),
       },
-      home: const StartScreen(),
+
+      onGenerateRoute: (settings) {
+        if (settings.name == Routes.game) {
+          final level = settings.arguments as Level? ?? Level.easy;
+          final config = configForLevel(level);
+
+          return MaterialPageRoute(builder: (_) => GameScreen(config: config));
+        }
+        
+        //fallback
+        return MaterialPageRoute(builder: (_) => const StartScreen());
+      },
+
       builder: (context, child) {
         return Center(
           child: FittedBox(
@@ -31,7 +50,7 @@ class Home extends StatelessWidget {
             child: SizedBox(
               width: 450,
               height: 800,
-              child: child!,
+              child: child ?? const SizedBox(),
             ),
           ),
         );
