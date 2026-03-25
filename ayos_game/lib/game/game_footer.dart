@@ -1,3 +1,6 @@
+
+// BOTTOM AREA WITH GUESS BUTTON ________________________________
+
 import 'package:flutter/material.dart';
 import 'package:ayos_game/widgets/action_button.dart';
 

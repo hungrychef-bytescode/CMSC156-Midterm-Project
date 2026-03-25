@@ -1,3 +1,6 @@
+
+// HINT MSGS AFTER WRONG GUESS ________________________________
+
 import 'package:flutter/material.dart';
 
 class HintController extends ChangeNotifier {

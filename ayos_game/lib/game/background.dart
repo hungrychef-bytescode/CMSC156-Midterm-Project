@@ -1,8 +1,10 @@
+
+// GAME BACKGROUND WIDGET DISPLAY ________________________________
+
 import 'package:flutter/material.dart';
 import 'package:ayos_game/assets.dart';
 import 'dart:ui';
 
-//background display for the game screen
 
 class GameBackground extends StatelessWidget {
   const GameBackground({super.key});

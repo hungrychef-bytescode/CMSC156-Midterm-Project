@@ -1,3 +1,6 @@
+
+// COUNTDOWN GAME TIMER ________________________________
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 
@@ -5,7 +8,7 @@ class GameTimerController extends ChangeNotifier {
   late int timeLeft;
   bool isRunning = false;
 
-  Timer? _timer;
+  Timer? _timer; // priv bc nothing outside class should touch it directly
 
   void init(int totalTime) {
     timeLeft = totalTime;
@@ -23,11 +26,11 @@ class GameTimerController extends ChangeNotifier {
       timeLeft--;
       notifyListeners();
 
-      if (timeLeft <= 10) {
+      if (timeLeft <= 10) { // trigger urgent tick when 10 seconds or less remain
         onTickUrgent();
       }
 
-      if (timeLeft <= 0) {
+      if (timeLeft <= 0) { // time's up
         t.cancel();
         isRunning = false;
         notifyListeners();
@@ -37,20 +40,20 @@ class GameTimerController extends ChangeNotifier {
   }
 
   void stop() {
-    _timer?.cancel();
+    _timer?.cancel(); 
     isRunning = false;
   }
 
   String get display {
-    final m = (timeLeft ~/ 60).toString().padLeft(2, '0');
-    final s = (timeLeft % 60).toString().padLeft(2, '0');
+    final m = (timeLeft ~/ 60).toString().padLeft(2, '0'); // format as MM:SS
+    final s = (timeLeft % 60).toString().padLeft(2, '0'); 
     return "$m:$s";
   }
 
-  bool get isUrgent => timeLeft <= 10 && isRunning;
+  bool get isUrgent => timeLeft <= 10 && isRunning; 
 
   @override
-  void dispose() {
+  void dispose() { // ensure timer is cancelled when controller is disposed
     _timer?.cancel();
     super.dispose();
   }

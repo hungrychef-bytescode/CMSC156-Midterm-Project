@@ -1,3 +1,6 @@
+
+// GAME ITEMS (ID, ASSET) ________________________________
+
 class GameItem {
   final String id;
   final String asset;
