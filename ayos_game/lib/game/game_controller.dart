@@ -1,9 +1,12 @@
+
+// CORE GAME LOGIC (SHUFFLE, SWAP, WIN CHECK) ________________________________
+
 import 'package:ayos_game/models/game_item.dart';
 import 'package:flutter/material.dart';
 
 class GameController extends ChangeNotifier {
-  late List<GameItem> correctOrder;
-  late List<GameItem> playerOrder;
+  late List<GameItem> correctOrder; // correct order
+  late List<GameItem> playerOrder; // player's current order
 
   bool gameStarted = false;
   bool hasGuessed = false;
@@ -16,11 +19,11 @@ class GameController extends ChangeNotifier {
     correctOrder = shuffled.take(itemCount).toList();
     playerOrder = List<GameItem>.from(correctOrder)..shuffle();
 
-    while (_isCorrect() && playerOrder.length > 1) {
+    while (_isCorrect() && playerOrder.length > 1) { // ensure player doesn't start with the correct order
       playerOrder.shuffle();
     }
 
-    notifyListeners();
+    notifyListeners(); // notify UI of initial setup
   }
 
   void swap(int from, int to) {
@@ -69,7 +72,7 @@ class GameController extends ChangeNotifier {
   bool guess() {
     if (!gameStarted || gameOver) return false;
   
-    hasGuessed = !hasGuessed;
+    hasGuessed = !hasGuessed; // toggle guess state
   
     if (_isCorrect()) {
       gameOver = true;

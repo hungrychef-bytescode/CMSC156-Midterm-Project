@@ -1,3 +1,6 @@
+
+// LEVEL CONFIGURATIONS FOR DATA ________________________________
+
 import 'package:ayos_game/models/level.dart';
 import 'package:ayos_game/models/game_item.dart';
 

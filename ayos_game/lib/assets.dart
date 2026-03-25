@@ -1,3 +1,6 @@
+
+// ASSETS PATHS (IMAGES) ________________________________________
+
 class Assets {
   // start screen
   static const homeBg = "assets/images/homescreen156.jpg";

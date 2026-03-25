@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
 
+// MAIN GAME UI LAYOUT ________________________________
+
+import 'package:flutter/material.dart';
 import 'package:ayos_game/game/game.dart';
 import 'package:ayos_game/widgets/countdown.dart';
 import 'package:ayos_game/widgets/hint_bubble.dart';

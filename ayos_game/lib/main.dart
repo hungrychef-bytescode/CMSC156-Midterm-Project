@@ -1,14 +1,13 @@
+
+// APP ENTRY POINT & ROUTING ________________________________
+
 import 'package:flutter/material.dart';
-
 import 'package:ayos_game/screens/screens.dart';
-
 import "package:ayos_game/utils/helper.dart";
 import "package:ayos_game/routes.dart";
 import "package:ayos_game/models/level.dart";
 
-//start app and run home widget
 void main() => runApp(const Home());
-
 
 /*
   class Home: root widget of the game
@@ -16,6 +15,7 @@ void main() => runApp(const Home());
   - initial route, static and dynamic routes.
   - builder for scaling screen
 */
+
 class Home extends StatelessWidget {
   const Home({super.key});
   
@@ -24,11 +24,11 @@ class Home extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
-      initialRoute: Routes.start,
+      initialRoute: Routes.start, //initial route
       
       routes: {
-        Routes.start: (context) => const StartScreen(),
-        Routes.level: (context) => const LevelScreen(),
+        Routes.start: (context) => const StartScreen(), //start screen
+        Routes.level: (context) => const LevelScreen(), //level screen
       },
 
       onGenerateRoute: (settings) {
@@ -39,7 +39,7 @@ class Home extends StatelessWidget {
           return MaterialPageRoute(builder: (_) => GameScreen(config: config));
         }
         
-        //fallback
+        //fallback - instead of crashing 
         return MaterialPageRoute(builder: (_) => const StartScreen());
       },
 

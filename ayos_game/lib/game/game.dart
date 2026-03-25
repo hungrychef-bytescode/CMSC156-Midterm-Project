@@ -1,3 +1,7 @@
+
+// BARREL EXPORT FOR GAME CONTROLLERS ________________________________
+// import multiple files with a single import line
+
 export 'countdown_controller.dart';
 export 'game_timer_controller.dart';
 export 'hint_controller.dart';
