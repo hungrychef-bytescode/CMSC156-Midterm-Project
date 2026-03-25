@@ -8,28 +8,29 @@ class GameAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Level level;
   final GameTimerController timer;
   final Animation<Offset> shake;
+  
+  final VoidCallback onExit;
 
   const GameAppBar({
     super.key,
     required this.level,
     required this.timer,
     required this.shake,
+    required this.onExit
   });
 
  @override
-Widget build(BuildContext context) {
-  return AppBar(
-    toolbarHeight: 60,
-    backgroundColor: const Color(0xFF382507),
+  Widget build(BuildContext context) {
+    return AppBar(
+      toolbarHeight: 60,
+      backgroundColor: const Color(0xFF382507),
 
-    leading: IconButton(
-      icon: const Icon(
-        Icons.arrow_back,
-        color: Color.fromARGB(255, 249, 199, 90),
-      ),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
+      leading: IconButton(
+        icon: const Icon(
+          Icons.arrow_back,
+          color: Color.fromARGB(255, 249, 199, 90),
+        ),
+      onPressed: onExit
     ),
 
     shape: const Border(
@@ -65,7 +66,7 @@ Widget build(BuildContext context) {
 Widget _buildStyledTimer() {
   return AnimatedBuilder(
     animation: timer,
-    builder: (_, __) {
+    builder: (_, _) {
       return SlideTransition(
         position: shake,
         child: AnimatedContainer(
@@ -74,7 +75,7 @@ Widget _buildStyledTimer() {
 
           decoration: BoxDecoration(
             color: timer.isUrgent
-                ? const Color(0xFFFF4444).withOpacity(0.9)
+                ? const Color(0xFFFF4444).withValues(alpha: 0.9)
                 : const Color.fromARGB(207, 241, 233, 141),
 
             border: Border.all(

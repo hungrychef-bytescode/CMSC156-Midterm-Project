@@ -17,11 +17,14 @@ class GameFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: ActionButton(
-        label: hasGuessed ? "Subukan ulit" : "Hulaan na!",
-        onTap: onGuess,
-        enabled: enabled
-      ),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: ActionButton(
+          label: hasGuessed ? "Subukan ulit" : "Hulaan na!",
+          onTap: onGuess,
+          enabled: enabled
+        ),
+      )
     );
   }
 }

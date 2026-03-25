@@ -4,6 +4,7 @@ import 'package:ayos_game/game/game.dart';
 import 'package:ayos_game/widgets/countdown.dart';
 import 'package:ayos_game/widgets/hint_bubble.dart';
 import 'package:ayos_game/models/level_config.dart';
+import 'package:ayos_game/assets.dart';
 
 class GameView extends StatelessWidget {
   final LevelConfig config;
@@ -13,6 +14,7 @@ class GameView extends StatelessWidget {
   final HintController hint;
   final GameAnimations animations;
 
+  final VoidCallback onExit;
   final VoidCallback onGuess;
 
   const GameView({
@@ -24,6 +26,7 @@ class GameView extends StatelessWidget {
     required this.hint,
     required this.animations,
     required this.onGuess,
+    required this.onExit
   });
 
   @override
@@ -33,15 +36,16 @@ class GameView extends StatelessWidget {
         level: config.level,
         timer: timer,
         shake: animations.shakeAnim,
+        onExit: onExit
       ),
-      
+
       body: Stack(
         children: [
           const GameBackground(),
           
           AnimatedBuilder(
             animation: hint,
-            builder: (_, __) {
+            builder: (_, _) {
               if (hint.message == null) return const SizedBox();
               
               return Align(
@@ -64,7 +68,7 @@ class GameView extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Transform.translate(
               offset: const Offset(0, 150),
-              child: Image.asset("assets/images/box.png", width: 450),
+              child: Image.asset(Assets.box, width: 450),
             ),
           ),
 
