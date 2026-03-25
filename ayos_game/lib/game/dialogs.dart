@@ -11,7 +11,7 @@ class GameDialogs {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => GameDialog(
+      builder: (ctx) => GameDialog(
         title: "You guessed all items correctly!",
         actions: [
           PillBtn(label: "Back to Menu", onTap: onExit),
@@ -35,7 +35,13 @@ class GameDialogs {
         correctOrder: correctOrder,
         actions: [
           PillBtn(label: "Back to Menu", onTap: onHome),
-          PillBtn(label: "Try Again", onTap: onRetry),
+          PillBtn(
+            label: "Try Again",
+            onTap: () {
+              Navigator.of(context).pop();
+              onRetry();                
+            },
+          ),
         ],
       ),
     );
